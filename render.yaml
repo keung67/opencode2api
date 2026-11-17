@@ -1,0 +1,20 @@
+# Exported from Render on 2026-11-17T12:51:08Z
+version: "1"
+services:
+- type: web
+  name: opencode2api
+  runtime: image
+  image:
+    url: ghcr.io/jasonxu114514/opencode2api:latest
+  plan: free
+  envVars:
+  - key: config.json
+    sync: false
+  - key: proxyfile
+    sync: false
+  region: oregon
+  dockerCommand: sh -c cp -f /etc/secrets/config.json /var/lib/opencode2api/config.json
+    && cp -f /etc/secrets/proxyfile /app/proxyfile && chown opencode2api:opencode2api
+    /var/lib/opencode2api/config.json /app/proxyfile && chmod 600 /var/lib/opencode2api/config.json
+    /app/proxyfile && exec /usr/local/bin/docker-entrypoint
+  autoDeployTrigger: commit
